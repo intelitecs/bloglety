@@ -1,0 +1,138 @@
+<form class="row push-2">
+  <div class="large-10 columns push-1">
+    <input type="text" size="70" />
+  </div>
+  <div class="large-2 columns pull-4">
+    <i class="icon-search search"></i>
+  </div>
+</form>
+
+
+<div class="row">
+  <div class="large-4 columns articles_browser">
+    <i data-tooltip title="article précédent"         class="tip-top article-prev icon-large icon-chevron-sign-left" ng-click="setPrevArticle()"></i>
+    <i data-tooltip title="article suivant"           class="tip-top article-next icon-large icon-chevron-sign-right" ng-click="setNextArticle()"></i>
+    <i data-tooltip title="commenter cet article"     class="tip-top article-comments icon-comments icon-large" ng-controller="CommentsController" ng-click="fectchAllComments()"></i>
+    <i class="icon-large icon-plus-sign"></i>
+  </div>
+  <div class="large-3 columns  pull-2  articles_management">
+    <i data-tooltip title="Créer un nouvel article"    ng-click="showNewArticleForm()"  class="tip-top article-create icon-save icon-large"></i>
+    <i data-tooltip title="mettre à jour cet article"  ng-click="showEditArticleForm(article)"  class="tip-top article-update icon-edit icon-large"></i>
+    <i data-tooltip title="supprimer cet article"      ng-click="deleteArticle()"    class="tip-top article-delete icon-trash icon-large"></i>
+  </div>
+  <br/>
+  <br/>
+</div>
+<div class="row article_block" ng-show="article">
+
+  <div class="large-12 columns">
+
+    <object width="720" height="420">{{article.description}}</object>
+
+  </div>
+
+  <div class="large-4 columns article_infos">
+    <h4 class="title">{{article.title}}</h4>
+    <h5 class="published_date"><b class="date">{{article.created_at | date:'fullDate' }}</b> | <i class="number">n° {{article.id}}   /{{articles.length}}</i></h5>
+    <p><h6 class="description">{{article.description}}</h6></p>
+    <hr class="article_info_separator" />
+
+    <li class="social">
+      <i class="icon-large icon-envelope"></i>
+      <i class="icon-large icon-twitter-sign"></i>
+      <i class="icon-large icon-facebook-sign"></i>
+      <i class="icon-large icon-linkedin-sign"></i>
+    </li>
+
+  </div>
+
+</div>
+
+<br/>
+<br/>
+<div class="row comment_management">
+  <div class="large-10 columns">
+            <span ng-controller="CommentsController" ng-show="getSelectedComments().length != 0">
+              <i data-tooltip title="Modifier les commentaires sélectionnés"  ng-show="getSelectedComments().length == 1"  class="tip-top article-update icon-edit icon-large"></i>
+              <i data-tooltip title="supprimer les commentaires sélectionnés" ng-controller="CommentsController"  ng-click="deleteSelectedComments()"  class="tip-top article-delete icon-trash icon-large"></i>
+            </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <hr class="separator" />
+    <div ng-controller="CommentsController" ng-show="getSelectedComments().length != 0">
+      <span><b>{{getSelectedComments().length}}</b> commentaires sélectionnés</span>
+    </div>
+    <p><h4 ng-show="article.comments.length != 0">{{article.comments.length}} commentaires enregistrés pour cet article.</h4></p>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="large-12 columns">
+    <div class="row comment" ng-repeat="comment in article.comments" ng-show="article.comments.length != 0">
+        <div class="large-2 columns">
+           <input type="checkbox" ng-model="comment.done" />
+        </div>
+        <div class="large-14 columns done-{{comment.done}} pull-1">
+          <p><h5>{{comment.body}}</h5></p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<br/>
+<br/>
+<div class="row">
+
+  <form class=" push-1 comment_form" ng-controller="CommentsController" ng-submit="createComment()" >
+    <div class="row">
+      <div class="large-12 columns">
+        <textarea rows="20" cols="90" ng-model="comment_body" id="comment"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-4 columns">
+        <input type="submit" value="commenter" />
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+<!--
+<div class="row articles_row">
+  <div class="large-4 columns articles_browser">
+    <i data-tooltip title="article précédent"         class="tip-top article-prev icon-large icon-chevron-sign-left" ng-click="setPrevArticle()"></i>
+    <i data-tooltip title="article suivant"           class="tip-top article-next icon-large icon-chevron-sign-right" ng-click="setNextArticle()"></i>
+    <i data-tooltip title="commenter cet article"     class="tip-top article-comments icon-comments icon-large" ng-click="displayCommentForm()"></i>
+    <i class="icon-large icon-plus-sign"></i>
+  </div>
+  <div class="large-3 columns  pull-2  articles_management">
+    <i data-tooltip title="Créer un nouvel article"    ng-click="showNewArticleForm()"  class="tip-top article-create icon-save icon-large"></i>
+    <i data-tooltip title="mettre à jour cet article"  ng-click="showEditArticleForm(article)"  class="tip-top article-update icon-edit icon-large"></i>
+    <i data-tooltip title="supprimer cet article"      ng-click="deleteArticle()"    class="tip-top article-delete icon-trash icon-large"></i>
+  </div>
+  <br/>
+  <div class="row article" id="article_article.id" ng-show="article">
+    <h3 class="article_title">{{article.title}}</h3>
+    <b><i>n° {{article.id}}, publication:</i> {{article.created_at | date:'fullDate'}}</b>
+    <div class="large-12 columns">
+     <img class="article_image" src="{{article.image}}" alt="{{article.title}} image" />
+       <h2>Article Picture</h2>
+    </div>
+    <div class="large-4">
+      <p class="description">{{article.description}}</p>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="large-12 columns comment_form"></div>
+  </div>
+
+</div> -->
+

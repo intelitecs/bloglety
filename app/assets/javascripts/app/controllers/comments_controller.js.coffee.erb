@@ -1,0 +1,115 @@
+@CommentsController = ($rootScope,$scope,Comment,$routeParams,$location) ->
+    #$rootScope.comment_message = "Welcome to Comment"
+    $rootScope.comments = {}
+    $scope.selectedComments = {}
+    $scope.comment = {}
+
+
+    #$cookieStore.put('key',30)
+    #$scope.cookiesValue = $cookieStore.get('key')
+    #console.log("cookies value : #{$scope.cookiesValue}")
+
+    $rootScope.getAllCommentsSuccessCallback = (response) ->
+        $rootScope.comments = response
+        console.log("Fetched all comment successffully!")
+        console.log("comments : #{$rootScope.comments}")
+        for k,v of $rootScope.comments
+            console.log("#{k} : #{v}")
+
+    $scope.getOneCommentSuccessCallback = (response) ->
+        $scope.comment = null
+        $scope.comment = response
+        console.log("Fetched one comment successffully!")
+        console.log("comment: #{$scope.comment}")
+        console.log($scope.comment.body)
+
+
+    $scope.deleteCommentSuccessCallback = (response) ->
+        console.log("comment #{$scope.selectedComments.length} deleted successfully!")
+        console.log("response : #{response}")
+        $scope.article.comments.splice($scope.article.comments.indexOf($scope.comment),1)
+
+    $scope.createCommentSuccessCallback = (response) ->
+        console.log("comment created successfully")
+        $scope.comment = response
+        $scope.article.comments.unshift($scope.comment)
+        $scope.comment_body = ""
+
+
+
+    $scope.updateCommentSuccessCallback = (response) ->
+        console.log("comment updated successfully!")
+        console.log("#{response}")
+
+
+    $scope.initialize_comments_service = (successCallback,errorCallback) ->
+        if((angular.isFunction(successCallback)) and (angular.isFunction(errorCallback)))
+            @commentService = new Comment(successCallback,errorCallback)
+
+
+    $scope.getAllComments = (article) ->
+        $scope.initialize_comments_service($rootScope.getAllCommentsSuccessCallback,$scope.errorCallback)
+        @commentService.all(article)
+
+    $scope.getOne = (id) ->
+        $scope.initialize_comments_service($scope.getOneCommentSuccessCallback,$scope.errorCallback)
+        @commentService.get($scope.article,id)
+
+
+    $scope.createComment =  ->
+        $scope.initialize_comments_service($scope.createCommentSuccessCallback,$scope.errorCallback)
+        data = {body: $scope.comment_body}
+        @commentService.create($scope.article,data)
+
+    $scope.updateComment = (comment,data) ->
+        $scope.initialize_comments_service($scope.updateCommentSuccessCallback,$scope.errorCallback)
+        @commentService.update(comment,data)
+
+
+    #$scope.updateComment = (id,data) ->
+    #    $scope.initialize_comments_service($scope.updateCommentSuccessCallback,$scope.errorCallback)
+    #    @commentService.update(id,$scope.article,data)
+
+    $scope.deleteComment = (comment) ->
+        $scope.comment = comment
+        $scope.initialize_comments_service($scope.deleteCommentSuccessCallback,$scope.errorCallback)
+        @commentService.delete(comment)
+
+    $scope.getSelectedComments = ->
+        $scope.selectedComments = _.filter $scope.article.comments, (comment) ->
+            comment.done
+
+
+
+    $scope.deleteSelectedComments = ->
+        $scope.getSelectedComments()
+        confirmation_message = null
+        if ($scope.selectedComments.length == 1)
+            confirmation_message = "Êtes-vous sure de supprimer le commentaire n°#{$scope.selectedComments[0].id} de l'article n°#{$scope.article.id} ?"
+        else
+            confirmation_message = "Êtes-vous sure de supprimer les #{$scope.selectedComments.length} commentaires séléctionnés de l'article n°#{$scope.article.id} ?"
+        unless !confirm(confirmation_message)
+            for index,comment of $scope.selectedComments
+                $scope.deleteComment(comment)
+            $scope.message = "suppression effectuée avec succès!"
+        else
+            for index, comment of $scope.selectedComments
+                comment.done = false
+
+
+
+
+    #$scope.deleteComment = (id) ->
+    #    $scope.initialize_comments_service($scope.deleteCommentSuccessCallback,$scope.errorCallback)
+    #    @commentService.delete($scope.article,id)
+
+    #$scope.updateComment(2,{body:"Nous pouvons donc classer Léticia parmi les meilleurs artistes du monde."})
+    #$scope.deleteComment(1)
+    #$scope.getOne(1)
+    #$scope.getAllComments($scope.article)
+    #$scope.createComment($scope.article,{body:"La première famille de Lety est très belle., le tableau que vous appecevez le démontre très. C'est bien la preuve que Lety est une grande artiste."})
+
+
+
+
+

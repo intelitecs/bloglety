@@ -1,0 +1,46 @@
+    <div class="row">
+      <div class="large-13 columns">
+        <h4>Renseignez le formulaire suivant pour mettre à jour l'article n° {{article_to_update.id}}</h4>
+        <form class="large-12 columns create_article_form" ng-submit="updateSelectedArticle()">
+          <fieldset>
+            <legend>Formulaire de mise à jour de l'article n° {{article_to_update.id}}</legend>
+            <div class="row">
+              <div class="large-5 columns">
+                <label for="title">Titre</label>
+              </div>
+              <div class="large-10 columns pull-3">
+                <input type="text" value="{{article_to_update.title}}" ng-model="article_to_update.title" id="title" size="50" autocomplete="off" ng-model-instant>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="large-5 columns ">
+                <label for="description">Description</label>
+              </div>
+              <div class="large-8 columns pull-5">
+                <textarea ng-model="article_to_update.description" value="{{article_to_update.title}}" rows="15" cols="70"  id="body" ng-model-instant></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="large-5 columns ">
+                <label for="image">Image </label>
+              </div>
+              <div class="large-8 columns pull-5">
+                <input type="file" ng-model="article_to_update.image" id="image" ng-model-instant>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="large-5 columns">
+                <button class="new_article" type="submit">Valider</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+
+      </div>
+    </div>
+
+
+
