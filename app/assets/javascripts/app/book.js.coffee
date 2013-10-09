@@ -1,6 +1,6 @@
 #= require_self
 
-@BookLety = angular.module("BookLety",['ngResource','ngCookies','rails'])
+@BookLety = angular.module("BookLety",['ngResource','angularFileUpload','ngCookies','rails'])
 
 $(document).on 'page:load', ->
   $('[ng-app]').each ->

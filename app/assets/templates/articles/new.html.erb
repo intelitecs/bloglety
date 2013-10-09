@@ -7,7 +7,7 @@
       <div class="large-5 columns push-2">
         <label for="title">Titre</label>
       </div>
-      <div class="large-10 columns pull-1">
+      <div class="large-9 columns pull-2">
         <input type="text" ng-model="article_title" id="title" size="50" autocomplete="off" ng-model-instant>
       </div>
     </div>
@@ -26,7 +26,7 @@
         <label for="image">Image de l'article</label>
       </div>
       <div class="large-8 columns pull-3">
-        <input type="file" ng-model="article_image" id="image" ng-model-instant>
+        <input type="file" ng-file-select="onFileSelect($files)"  ng-model="article_image" id="image" multiple ng-model-instant>
       </div>
     </div>
 

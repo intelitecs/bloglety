@@ -1,10 +1,11 @@
-@ArticlesController = ($scope,Article,$rootScope,Comment,$location,$routeParams) ->
+@ArticlesController = ($scope,Article,$rootScope,Comment,$location,$routeParams,$http) ->
     $scope.message = "Here is the ArticlesController"
     $scope.articles = $rootScope.articles
     $scope.index = 0
     $scope.article = $scope.articles[$scope.index]
     $scope.dones = {}
     $scope.errors = null
+    $scope.selected_article_image = null
 
 
 
@@ -29,7 +30,7 @@
 
     $scope.createSuccessCallback = (response) ->
       console.log("article created successfully")
-      article = {id: response.id, title: response.title, description: response.description, created_at: response.created_at, updated_at: response.updated_at}
+      article = {id: response.id, title: response.title, description: response.description, image: response.image created_at: response.created_at, updated_at: response.updated_at}
       $scope.article = article
       $scope.articles.unshift($scope.article)
       $scope.article_title =""
@@ -67,9 +68,14 @@
         @articleService = new Article(successCallback,errorCallback)
 
 
+    $scope.onFileSelect = ($files) ->
+      $scope.selected_article_image = $files[0]
+
+
+
     $scope.addArticle =  ->
       $scope.initialize($scope.createSuccessCallback, $scope.createErrorCallback)
-      article = {title: $scope.article_title, description: $scope.article_description}
+      article = {title: $scope.article_title, description: $scope.article_description, image: $scope.selected_article_image}
       @articleService.create(article)
 
 

@@ -1,7 +1,12 @@
 require 'test_helper'
 
 class ArticleTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  setup do
+     @article = articles(:one)
+  end
+
+   test "has image attribute" do
+     assert_respond_to @article,:image,"No attribute image"
+   end
 end
